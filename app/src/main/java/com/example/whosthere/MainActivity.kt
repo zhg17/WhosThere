@@ -20,6 +20,11 @@ class MainActivity : AppCompatActivity() {
         mLoginBtn = findViewById(R.id.loginBtn)
         mRegisterBtn = findViewById(R.id.registerBtn)
 
+        mLoginBtn!!.setOnClickListener {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
         mRegisterBtn!!.setOnClickListener {
             val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
             startActivity(intent)
