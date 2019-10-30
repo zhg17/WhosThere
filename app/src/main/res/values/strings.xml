@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WhosThere</string>
+    <string name="login_btn_name">Login</string>
+    <string name="register_btn_name">Register</string>
+</resources>

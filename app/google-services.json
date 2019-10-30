@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "719544919675",
+    "firebase_url": "https://whosthere-df362.firebaseio.com",
+    "project_id": "whosthere-df362",
+    "storage_bucket": "whosthere-df362.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719544919675:android:dfdc8341d01e339cdda4de",
+        "android_client_info": {
+          "package_name": "com.example.whosthere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719544919675-igjoavne3vms93a5sp8m298343p9h5a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7qlYhnh2YQKafveDU-UY9c-V5YJoFqQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719544919675-igjoavne3vms93a5sp8m298343p9h5a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
