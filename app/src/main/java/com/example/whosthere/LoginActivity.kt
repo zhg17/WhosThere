@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import android.text.method.PasswordTransformationMethod
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -40,6 +41,8 @@ class LoginActivity : AppCompatActivity() {
         userEmail = findViewById(R.id.login_email)
         userPassword = findViewById(R.id.login_pass)
         loginBtn = findViewById(R.id.login_button)
+
+        userPassword?.setTransformationMethod(PasswordTransformationMethod.getInstance())
 
         loginBtn!!.setOnClickListener { loginUserAccount() }
     }
