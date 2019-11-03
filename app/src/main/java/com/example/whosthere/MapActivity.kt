@@ -32,9 +32,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mLocationManager: LocationManager? = null
     private var mLatitude: TextView? = null
     private var mLongitude: TextView? = null
-    private var currLatitude: Double? = null
-    private var currLongitude: Double? = null
-    private var mFusedLocationClient: FusedLocationProviderClient? = null
+    private var currLatitude: Double = 0.0
+    private var currLongitude: Double = 0.0
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     protected var mLastLocation: Location? = null
 
 
@@ -44,9 +44,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         // Initializing views
-        mLatitude = findViewById<TextView>(R.id.latitude)
-        mLongitude = findViewById<TextView>(R.id.longitude)
         mLocationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -83,25 +82,26 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     private fun getLastLocation() {
-
         Log.i(TAG, "into getLastLocation")
         // error is right here, cannot get location
-      //  mFusedLocationClient!!.lastLocation.addOnSuccessListener { location: Location? ->
-      //      if (location == null) {
-      //          Log.i(TAG, "location is null")
-       //         currLatitude = 0.0
-       //         currLongitude = 0.0
-       //     } else {
-       //         Log.i(TAG, "location founded")
-       //         currLatitude = location?.latitude
-        //        currLongitude = location?.longitude
-        //    }
-       // }
-        currLatitude = 4.0
-        currLongitude = 10.0
-        val currentLocation = LatLng(currLatitude!!, currLongitude!!)
-        mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location == null) {
+                Log.i(TAG, "location is null")
+                currLatitude = 0.0
+                currLongitude = 0.0
+            } else {
+                Log.i(TAG, "location founded")
+                mLastLocation = location
+                currLatitude = location.latitude
+                currLongitude = location.longitude
+                Log.i(TAG, currLatitude.toBigDecimal().toPlainString())
+                val currentLocation = LatLng(currLatitude, currLongitude)
+                mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+            }
+        }
+      //  currLatitude = 4.0
+      //  currLongitude = 10.0
     }
 
 
