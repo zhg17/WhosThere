@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
         // Retrieve UID for Current User if Login successful and store in intent, for the key UserID
         // Start Intent DashboardActivity if Registration Successful
 
-        val key = mAuth!!.currentUser!!.email
+
 
         mAuth!!.signInWithEmailAndPassword(currEmail, currPass)
             .addOnCompleteListener { task ->
@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
                     val intent = Intent(this@LoginActivity, MapActivity::class.java)
-                    intent.putExtra("USER_ID",key)
+
                     startActivity(intent)
                 } else {
                     Toast.makeText(
