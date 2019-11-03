@@ -72,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
                     val intent = Intent(this@LoginActivity, MapActivity::class.java)
+                    intent.putExtra("UserID",mAuth!!.uid)
 
                     startActivity(intent)
                 } else {

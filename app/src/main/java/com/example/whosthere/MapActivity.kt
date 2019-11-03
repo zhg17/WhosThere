@@ -24,6 +24,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
+import android.widget.Button
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -37,7 +38,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     protected var mLastLocation: Location? = null
 
-
+    private lateinit var profilebutton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        profilebutton= findViewById(R.id.profile)
+
+        profilebutton.setOnClickListener{
+            val intent = Intent (this@MapActivity,connection::class.java)
+            val UserID = this.intent.getStringExtra("UserID")
+            intent.putExtra("UserID",UserID)
+            startActivity(intent)
+        }
     }
 
     private fun checkPermissions(): Boolean {
