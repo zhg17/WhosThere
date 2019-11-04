@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseReference
 
 class LoginActivity : AppCompatActivity() {
 
-    private var mDatabaseReference: DatabaseReference? = null
-    private var mDatabase: FirebaseDatabase? = null
     private var userEmail: EditText? = null
     private var userPassword: EditText? = null
     private var loginBtn: Button? = null
@@ -35,8 +33,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
         mAuth = FirebaseAuth.getInstance()
 
         val intent = intent
@@ -85,6 +81,4 @@ class LoginActivity : AppCompatActivity() {
             }
 
     }
-
-
 }

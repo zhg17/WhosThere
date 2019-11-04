@@ -25,8 +25,12 @@ class RegistrationActivity : AppCompatActivity() {
 
     private var emailTV: EditText? = null
     private var passwordTV: EditText? = null
+    private var usernameTV:EditText?=null
     private var regBtn: Button? = null
     private var mAuth: FirebaseAuth? = null
+
+    private var mDatabase:DatabaseReference?=null
+
     private var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +38,18 @@ class RegistrationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registration)
 
         mAuth = FirebaseAuth.getInstance()
+        mDatabase=FirebaseDatabase.getInstance().getReference("Users")
 
         //Initializing views
         emailTV = findViewById(R.id.register_email)
         passwordTV = findViewById(R.id.register_pass)
+        usernameTV=findViewById(R.id.username)
         regBtn = findViewById(R.id.register_button)
 
         passwordTV?.setTransformationMethod(PasswordTransformationMethod.getInstance())
         regBtn!!.setOnClickListener { registerNewUser() }
+
+
     }
 
     private fun registerNewUser() {
@@ -50,6 +58,7 @@ class RegistrationActivity : AppCompatActivity() {
         val password: String
         email = emailTV!!.text.toString()
         password = passwordTV!!.text.toString()
+        val username=usernameTV!!.text.toString()
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG).show()
@@ -59,12 +68,18 @@ class RegistrationActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Please enter password!", Toast.LENGTH_LONG).show()
             return
         }
+        if (TextUtils.isEmpty(username)){
+            Toast.makeText(applicationContext,"Please enter a user name!",Toast.LENGTH_LONG).show()
+            return
+        }
 
         val x = mAuth!!.createUserWithEmailAndPassword(email, password)
         x.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
-                saveUser(email)
+
+                saveUser(email,username)
+
                 val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
                 intent.putExtra("uid", uid)
                 startActivity(intent)
@@ -74,12 +89,13 @@ class RegistrationActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUser(email: String) {
+    private fun saveUser(email: String,username:String) {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val user = User(uid!!, email, arrayListOf(), null)
+        val user = User(uid!!, email, arrayListOf(), null,username)
         ref.child(uid!!).setValue(user).addOnCompleteListener{
             Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG)
+            Log.i("USER saved",uid)
         }
     }
 

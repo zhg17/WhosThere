@@ -1,10 +1,8 @@
 package com.example.whosthere
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.location.LocationManager
-import android.location.LocationListener
 import android.location.Location
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -13,17 +11,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.lang.RuntimeException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import android.Manifest
-import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
+
+import android.widget.Button
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -36,6 +34,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var currLongitude: Double = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     protected var mLastLocation: Location? = null
+
+
+    private lateinit var profilebutton: Button
     private var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +62,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        profilebutton= findViewById(R.id.profile)
+
+        profilebutton.setOnClickListener{
+            Log.i("MAP","go to profile")
+            val intentNext = Intent (this@MapActivity,ProfileActivity::class.java)
+            intentNext.putExtra("uid",uid)
+            startActivity(intentNext)
+        }
     }
 
     private fun checkPermissions(): Boolean {
