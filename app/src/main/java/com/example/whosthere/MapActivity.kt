@@ -19,26 +19,41 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
+
 import android.widget.Button
+
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private var mLocationManager: LocationManager? = null
-    private var mLatitude: TextView? = null
-    private var mLongitude: TextView? = null
     private var currLatitude: Double = 0.0
     private var currLongitude: Double = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     protected var mLastLocation: Location? = null
 
+
     private lateinit var profilebutton: Button
+    private var uid: String? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+        val intent = intent
+        uid = intent.getStringExtra("uid")
+        if (uid == null) {
+            Log.i(TAG, "uid gotten from currentUser")
+            if(uid == null) {
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                uid = currentUser!!.uid
+                Log.i(TAG, "current uid " + uid)
+            }
+        }
         // Initializing views
         mLocationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -99,6 +114,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 mLastLocation = location
                 currLatitude = location.latitude
                 currLongitude = location.longitude
+                val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
+                ref.setValue(mLastLocation)
                 Log.i(TAG, currLatitude.toBigDecimal().toPlainString())
                 val currentLocation = LatLng(currLatitude, currLongitude)
                 mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
