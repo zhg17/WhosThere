@@ -38,8 +38,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     protected var mLastLocation: Location? = null
     private var uid: String? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -53,6 +51,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.i(TAG, "current uid " + uid)
             }
         }
+        // Starting background service
+        val serviceIntent = Intent(this, BackgroundLocationService::class.java)
+        serviceIntent.putExtra("uid", uid)
+        startService(serviceIntent)
         // Initializing views
         mLocationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -88,9 +90,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // permissions this app might request
     }
 
-
-
-
     private fun getLastLocation() {
         Log.i(TAG, "into getLastLocation")
         // error is right here, cannot get location
@@ -115,8 +114,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
       //  currLatitude = 4.0
       //  currLongitude = 10.0
     }
-
-
 
     /**
      * Manipulates the map once available.
