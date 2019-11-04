@@ -69,9 +69,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
                     val intent = Intent(this@LoginActivity, MapActivity::class.java)
-//                   intent.putExtra(UserID,mAuth!!.uid)
-
-
                     intent.putExtra("uid", uid)
                     startActivity(intent)
                 } else {
@@ -84,9 +81,4 @@ class LoginActivity : AppCompatActivity() {
             }
 
     }
-    companion object{
-        val UserID="com.example.whosthere.UID"
-    }
-
-
 }

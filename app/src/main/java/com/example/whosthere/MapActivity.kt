@@ -64,10 +64,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         profilebutton.setOnClickListener{
             Log.i("MAP","go to profile")
-            val intent_Next = Intent (this@MapActivity,ProfileActivity::class.java)
-            val userID=intent.getStringExtra(LoginActivity.UserID)
-            intent.putExtra(UserID,userID)
-            startActivity(intent_Next)
+            val intentNext = Intent (this@MapActivity,ProfileActivity::class.java)
+            intentNext.putExtra("uid",uid)
+            startActivity(intentNext)
         }
     }
 
@@ -154,6 +153,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object {
         private val TAG = "whosthere"
         private val REQUEST_PERMISSIONS_REQUEST_CODE = 1000
-        val UserID="com.example.whosthere.UID"
     }
 }

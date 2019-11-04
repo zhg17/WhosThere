@@ -3,12 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
-        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="username" />
+        android:id="@+id/usernameView"
+        android:text="Username"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailView"
+        android:text="Email"/>
 
     <EditText
         android:id="@+id/search"
@@ -16,7 +20,16 @@
         android:layout_height="wrap_content"
         android:hint="Enter friend"
         />
-
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addFriendbutton"
+        android:text="Add Friend"
+        android:layout_below="@+id/search"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewFriends"
+        android:layout_below="@+id/addFriendbutton"/>
 
 </LinearLayout>

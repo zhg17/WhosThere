@@ -18,10 +18,6 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.auth.FirebaseAuth
-<<<<<<< HEAD
-import com.google.firebase.database.DatabaseReference
-=======
->>>>>>> e495bd787cf442045843a6b5ae600b334aa5ac16
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -82,11 +78,7 @@ class RegistrationActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
 
-               // val id = mDatabase!!.push().key
-               // val user = Users(id!!,username)
-                //mDatabase!!.child(mAuth!!.uid.toString()).child(id).setValue(user)
-
-                saveUser(email)
+                saveUser(email,username)
 
                 val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
                 intent.putExtra("uid", uid)
@@ -97,12 +89,13 @@ class RegistrationActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUser(email: String) {
+    private fun saveUser(email: String,username:String) {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val user = User(uid!!, email, arrayListOf(), null)
+        val user = User(uid!!, email, arrayListOf(), null,username)
         ref.child(uid!!).setValue(user).addOnCompleteListener{
             Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG)
+            Log.i("USER saved",uid)
         }
     }
 
