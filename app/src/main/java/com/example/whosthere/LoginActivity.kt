@@ -22,8 +22,6 @@ import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
 
-    private var mDatabaseReference: DatabaseReference? = null
-    private var mDatabase: FirebaseDatabase? = null
     private var userEmail: EditText? = null
     private var userPassword: EditText? = null
     private var loginBtn: Button? = null
@@ -33,8 +31,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
         mAuth = FirebaseAuth.getInstance()
 
         //Initializing views
@@ -75,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
                     val intent = Intent(this@LoginActivity, MapActivity::class.java)
-                    intent.putExtra("UserID",mAuth!!.uid)
+                    intent.putExtra(UserID,mAuth!!.uid)
 
                     startActivity(intent)
                 } else {
@@ -87,6 +83,9 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
+    }
+    companion object{
+        val UserID="com.example.whosthere.UID"
     }
 
 }

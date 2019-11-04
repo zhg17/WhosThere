@@ -1,10 +1,8 @@
 package com.example.whosthere
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.location.LocationManager
-import android.location.LocationListener
 import android.location.Location
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -13,12 +11,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.lang.RuntimeException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import android.Manifest
-import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
@@ -53,10 +48,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         profilebutton= findViewById(R.id.profile)
 
         profilebutton.setOnClickListener{
-            val intent = Intent (this@MapActivity,connection::class.java)
-            val UserID = this.intent.getStringExtra("UserID")
-            intent.putExtra("UserID",UserID)
-            startActivity(intent)
+            Log.i("MAP","go to profile")
+            val intent_Next = Intent (this@MapActivity,ProfileActivity::class.java)
+            val userID=intent.getStringExtra(LoginActivity.UserID)
+            intent.putExtra(UserID,userID)
+            startActivity(intent_Next)
         }
     }
 
@@ -141,5 +137,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object {
         private val TAG = "whosthere"
         private val REQUEST_PERMISSIONS_REQUEST_CODE = 1000
+        val UserID="com.example.whosthere.UID"
     }
 }

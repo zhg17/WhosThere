@@ -16,28 +16,36 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class RegistrationActivity : AppCompatActivity() {
 
     private var emailTV: EditText? = null
     private var passwordTV: EditText? = null
+    private var usernameTV:EditText?=null
     private var regBtn: Button? = null
     private var mAuth: FirebaseAuth? = null
+    private var mDatabase:DatabaseReference?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
         mAuth = FirebaseAuth.getInstance()
+        mDatabase=FirebaseDatabase.getInstance().getReference("Users")
 
         //Initializing views
         emailTV = findViewById(R.id.register_email)
         passwordTV = findViewById(R.id.register_pass)
+        usernameTV=findViewById(R.id.username)
         regBtn = findViewById(R.id.register_button)
 
         passwordTV?.setTransformationMethod(PasswordTransformationMethod.getInstance())
         regBtn!!.setOnClickListener { registerNewUser() }
+
+
     }
 
     private fun registerNewUser() {
@@ -46,6 +54,7 @@ class RegistrationActivity : AppCompatActivity() {
         val password: String
         email = emailTV!!.text.toString()
         password = passwordTV!!.text.toString()
+        val username=usernameTV!!.text.toString()
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG).show()
@@ -55,11 +64,18 @@ class RegistrationActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Please enter password!", Toast.LENGTH_LONG).show()
             return
         }
+        if (TextUtils.isEmpty(username)){
+            Toast.makeText(applicationContext,"Please enter a user name!",Toast.LENGTH_LONG).show()
+            return
+        }
 
         val x = mAuth!!.createUserWithEmailAndPassword(email, password)
         x.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
+                val id = mDatabase!!.push().key
+                val user = Users(id!!,username)
+                mDatabase!!.child(mAuth!!.uid.toString()).child(id).setValue(user)
 
                 val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
                 startActivity(intent)
