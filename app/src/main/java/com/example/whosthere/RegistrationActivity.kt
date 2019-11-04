@@ -11,11 +11,14 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import android.util.Log
+import android.location.Location
 
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 class RegistrationActivity : AppCompatActivity() {
@@ -24,6 +27,7 @@ class RegistrationActivity : AppCompatActivity() {
     private var passwordTV: EditText? = null
     private var regBtn: Button? = null
     private var mAuth: FirebaseAuth? = null
+    private var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,13 +64,24 @@ class RegistrationActivity : AppCompatActivity() {
         x.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
-
+                saveUser(email)
                 val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
+                intent.putExtra("uid", uid)
                 startActivity(intent)
             } else {
                 Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
             }
         }
     }
+
+    private fun saveUser(email: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val user = User(uid!!, email, arrayListOf(), null)
+        ref.child(uid!!).setValue(user).addOnCompleteListener{
+            Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG)
+        }
+    }
+
 
 }
