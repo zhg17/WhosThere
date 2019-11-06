@@ -34,6 +34,7 @@ class ProfileActivity : AppCompatActivity(){
         friend=ArrayList()
 
         friendDBReference = database!!.reference!!.child("Friends")
+        userDBReference=database!!.reference!!.child("Users").child(intent.getStringExtra("uid"))
 
        addFriendbutton.setOnClickListener{addFriendbutton()}
         Log.i("profile","profile page IN")
@@ -54,22 +55,16 @@ class ProfileActivity : AppCompatActivity(){
     }
     override fun onStart(){
         super.onStart()
-        //userDBReference!!.addValueEventListener(object:ValueEventListener{
-         //   override fun onDataChange(dataSnapshot:DataSnapshot){
+        userDBReference!!.addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(dataSnapshot:DataSnapshot){
 
-                //below line cause crash "DatabaseException : class android.locatioin does not define a no-argument constructor
-                //see https://stackoverflow.com/questions/47166657/class-android-location-does-not-define-a-no-argument-constructor
-                //we need to change how to store the location in the database becuase firebase doesn't support location class
-                //********
-          //      val item = dataSnapshot.getValue<User>(User::class.java)
-                //********
-          //      usernameView.text=item!!.username
-            //    emailView.text=item!!.email
+                val item = dataSnapshot.getValue<User>(User::class.java)
+                usernameView.text="UserName: "+item!!.username
+                emailView.text="UserEmail: "+item!!.email
 
-
-            //}
-           // override fun onCancelled(databaseError:DatabaseError){}
-        //})
+            }
+            override fun onCancelled(databaseError:DatabaseError){}
+        })
         friendDBReference!!.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 for (postSnapshor in dataSnapshot.children){
