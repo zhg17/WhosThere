@@ -92,7 +92,7 @@ class RegistrationActivity : AppCompatActivity() {
     private fun saveUser(email: String,username:String) {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val user = User(uid!!, email, arrayListOf(), PlaceCoor(0.0,0.0),username)
+        val user = User(uid!!, email, arrayListOf(), 0.0,0.0,username)
         ref.child(uid!!).setValue(user).addOnCompleteListener{
             Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG)
             Log.i("USER saved",uid)

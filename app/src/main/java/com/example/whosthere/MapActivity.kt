@@ -113,11 +113,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 currLatitude = location.latitude
                 currLongitude = location.longitude
                 //use customized class to store location because of firebase restriction
-                val myPLaceCoor=PlaceCoor(currLatitude,currLongitude)
-                val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
+                //val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
                 //ref.setValue(mLastLocation)
-                ref.setValue(myPLaceCoor)
-                Log.i(TAG, currLatitude.toBigDecimal().toPlainString())
+
+                val lat=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/lat")
+                lat.setValue(currLatitude)
+                val long=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/long")
+                long.setValue(currLongitude)
+                Log.i(TAG,mLastLocation.toString())
                 val currentLocation = LatLng(currLatitude, currLongitude)
                 mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))

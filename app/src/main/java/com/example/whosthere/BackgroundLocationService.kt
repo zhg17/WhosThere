@@ -93,8 +93,12 @@ class BackgroundLocationService : Service() {
     }
 
     private fun updateLocation(location: Location) {
-        val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
-        ref.setValue(location)
+        //val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
+        //ref.setValue(location)
+        val lat=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/lat")
+        lat.setValue(location.latitude)
+        val long=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/long")
+        long.setValue(location.longitude)
         Log.i(TAG, "Location updated to: ${location.latitude}, ${location.longitude}")
     }
 

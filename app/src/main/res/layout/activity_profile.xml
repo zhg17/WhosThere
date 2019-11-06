@@ -7,13 +7,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/usernameView"
-        android:text="Username"/>
+        android:text="Username: "/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/emailView"
-        android:text="Email"/>
-
+        android:text="Email: "/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LocationView"
+        android:text="Location: "/>
     <EditText
         android:id="@+id/search"
         android:layout_width="match_parent"
