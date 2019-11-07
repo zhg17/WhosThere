@@ -19,7 +19,7 @@ class ProfileActivity : AppCompatActivity(){
     private var userDBReference:DatabaseReference?=null
     private var database:FirebaseDatabase?=null
 
-    private lateinit var friend: MutableList<Friend>
+    private lateinit var friend: MutableList<String>
     internal lateinit var listViewFriends: ListView
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -50,6 +50,22 @@ class ProfileActivity : AppCompatActivity(){
             return
         }
 
+
+        userDBReference!!.addValueEventListener(object:ValueEventListener{
+            override fun onDataChange(dataSnapshot:DataSnapshot){
+                friend.clear()
+                val item=dataSnapshot.getValue(User::class.java)
+                for (i in item!!.friends){
+                    friend.add(i)
+                }
+            }
+            override fun onCancelled(databaseError:DatabaseError){}
+        })
+
+        friend.add(name)
+        val addlist=FirebaseDatabase.getInstance().getReference("Users/" + intent.getStringExtra("uid")!! + "/friends")
+        addlist.setValue(friend)
+
         //will search on db at table "User"
         //disply all user with same name (since name is not unique)
         //via some scrollable bar or sth
@@ -67,22 +83,7 @@ class ProfileActivity : AppCompatActivity(){
             }
             override fun onCancelled(databaseError:DatabaseError){}
         })
-        friendDBReference!!.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot){
-                for (postSnapshor in dataSnapshot.children){
-                    if (postSnapshor.key==intent.getStringExtra("uid")){
-                        for (p in postSnapshor.children){
-                            val name=p.getValue<Friend>(Friend::class.java)
-                            friend.add(name!!)
-                        }
-                    }
-                }
-                val friendAdapter=UserList(this@ProfileActivity,friend)
-                listViewFriends.adapter=friendAdapter
 
-            }
-            override fun onCancelled(databaseError: DatabaseError){}
-        })
     }
 
 }
