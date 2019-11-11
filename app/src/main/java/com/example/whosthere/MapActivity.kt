@@ -19,10 +19,13 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.util.Log
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseError
 
 import android.widget.Button
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -87,7 +90,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             REQUEST_PERMISSIONS_REQUEST_CODE -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i(TAG, "about to emter getLastLocation from onRequest")
+                    Log.i(TAG, "about to enter getLastLocation from onRequest")
                     getLastLocation()
                 } else {
                     Log.i(TAG, "failed")
@@ -151,6 +154,50 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.i(TAG, "permission already granted")
             getLastLocation()
         }
+    }
+
+    private fun displayFriends () {
+        var friends = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/friends")
+        friends.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    // each postSnapshot is a username of a friend
+                    val username = postSnapshot.getValue(String::class.java)
+                    var lat = null
+                    var long = null
+                    findFriend(username!!)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    @JvmVoid
+    private fun findFriend (username: String): Pair<String, String> {
+        var latitude = ""
+        var longitude = ""
+        var users = FirebaseDatabase.getInstance().getReference("Users/")
+        users.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    // each postSnapshot is a username of a friend
+                    val currUsername = postSnapshot.child("/username").getValue(String::class.java)
+                    if (username == currUsername) {
+                        latitude = postSnapshot.child("/lat").getValue(String::class.java)!!
+                        longitude = postSnapshot.child("/long").getValue(String::class.java)!!
+                    }
+                    break
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+        return Pair(latitude, longitude)
     }
 
     companion object {

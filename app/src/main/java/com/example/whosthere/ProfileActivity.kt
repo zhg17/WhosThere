@@ -38,7 +38,7 @@ class ProfileActivity : AppCompatActivity(){
         friendDBReference = database!!.reference!!.child("Friends")
         userDBReference=database!!.reference!!.child("Users").child(intent.getStringExtra("uid"))
 
-       addFriendbutton!!.setOnClickListener{addFriendbutton()}
+        addFriendbutton!!.setOnClickListener{addFriendbutton()}
         Log.i("profile","profile page IN")
 
     }
