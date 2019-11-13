@@ -53,8 +53,8 @@ class ProfileActivity : AppCompatActivity(){
         var hasuser=false
         database!!.reference!!.child("Users").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(dataSnapshot:DataSnapshot){
-                for (postSnapshor in dataSnapshot.children){
-                        val item = postSnapshor.getValue(User::class.java)
+                for (postSnapshot in dataSnapshot.children){
+                        val item = postSnapshot.getValue(User::class.java)
                         Log.i("CHECKOUT USER", item!!.username)
                         if (item!!.username == name) {
                             hasuser = true
@@ -125,7 +125,7 @@ class ProfileActivity : AppCompatActivity(){
             override fun onCancelled(p0: DatabaseError) {}
         })
         //will search on db at table "User"
-        //disply all user with same name (since name is not unique)
+        //display all user with same name (since name is not unique)
         //via some scrollable bar or sth
         //the user would choose who to add
     }

@@ -127,6 +127,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 val currentLocation = LatLng(currLatitude, currLongitude)
                 mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+                displayFriends()
             }
         }
       //  currLatitude = 4.0
@@ -156,6 +157,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun reset () {
+        latFound = 0.0
+        longFound = 0.0
+    }
+
+    private var latFound = 0.0
+    private var longFound = 0.0
+
     private fun displayFriends () {
         var friends = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/friends")
         friends.addValueEventListener(object: ValueEventListener {
@@ -163,33 +172,35 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 for (postSnapshot in dataSnapshot.children) {
                     // each postSnapshot is a username of a friend
                     val username = postSnapshot.getValue(String::class.java)
-                    var lat = null
-                    var long = null
                     findFriend(username!!)
+                    reset()
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
+                // Getting Post failed,failed log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         })
     }
 
-    @JvmVoid
-    private fun findFriend (username: String): Pair<String, String> {
-        var latitude = ""
-        var longitude = ""
+    // findFriends has error but display friends should be good
+    // need to find the location of an user given the username
+
+
+    private fun findFriend(username: String){
         var users = FirebaseDatabase.getInstance().getReference("Users/")
         users.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
                     // each postSnapshot is a username of a friend
-                    val currUsername = postSnapshot.child("/username").getValue(String::class.java)
-                    if (username == currUsername) {
-                        latitude = postSnapshot.child("/lat").getValue(String::class.java)!!
-                        longitude = postSnapshot.child("/long").getValue(String::class.java)!!
+                    val currUser = postSnapshot.getValue(User::class.java)
+                    if (currUser!!.username.compareTo(username) == 0) {
+                        var latFound = currUser!!.lat
+                        var longFound = currUser!!.long
+                        Log.i(TAG, "found user: (break)  "  + latFound + " " + longFound)
+                        val currentLocation = LatLng(latFound, longFound)
+                        mMap.addMarker(MarkerOptions().position(currentLocation).title(username))
                     }
-                    break
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -197,7 +208,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         })
-        return Pair(latitude, longitude)
     }
 
     companion object {
