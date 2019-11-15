@@ -3,4 +3,5 @@
     <string name="login_btn_name">Login</string>
     <string name="register_btn_name">Register</string>
     <string name="title_activity_map">Map</string>
+    <string name="main_logo_desc">Main logo for the application</string>
 </resources>
