@@ -16,9 +16,8 @@ import android.location.Location
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 
 class RegistrationActivity : AppCompatActivity() {
@@ -72,21 +71,39 @@ class RegistrationActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,"Please enter a user name!",Toast.LENGTH_LONG).show()
             return
         }
+        var hasusername=false
+        mDatabase!!.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children){
+                    val item = postSnapshot.getValue(User::class.java)
+                    Log.i("CHECKOUT USER", item!!.username)
+                    if (item!!.username == username) {
+                        Toast.makeText(applicationContext, "User name has been used", Toast.LENGTH_LONG).show()
+                        hasusername=true
+                    }
 
-        val x = mAuth!!.createUserWithEmailAndPassword(email, password)
-        x.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
+                }
+                if (!hasusername){
+                    val x = mAuth!!.createUserWithEmailAndPassword(email, password)
+                    x.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
 
-                saveUser(email,username)
+                            saveUser(email,username)
 
-                val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
-                intent.putExtra("uid", uid)
-                startActivity(intent)
-            } else {
-                Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
+                            val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
+                            intent.putExtra("uid", uid)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(applicationContext, "Registration failed! Please try again later", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             }
-        }
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+
     }
 
     private fun saveUser(email: String,username:String) {

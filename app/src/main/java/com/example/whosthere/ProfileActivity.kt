@@ -15,7 +15,6 @@ class ProfileActivity : AppCompatActivity(){
     private var addFriendbutton:Button?=null
     private var searchFriendView:EditText?=null
 
-    private var friendDBReference: DatabaseReference?=null
     private var userDBReference:DatabaseReference?=null
     private var database:FirebaseDatabase?=null
 
@@ -35,7 +34,6 @@ class ProfileActivity : AppCompatActivity(){
 
         friend=ArrayList()
 
-        friendDBReference = database!!.reference!!.child("Friends")
         userDBReference=database!!.reference!!.child("Users").child(intent.getStringExtra("uid"))
 
         addFriendbutton!!.setOnClickListener{addFriendbutton()}
