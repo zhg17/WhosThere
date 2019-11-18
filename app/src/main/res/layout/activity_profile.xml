@@ -13,11 +13,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/emailView"
         android:text="Email: "/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/LocationView"
         android:text="Location: "/>
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="143dp"
+        android:layout_height="wrap_content"
+        android:text="Update UserName" />
+
     <EditText
         android:id="@+id/search"
         android:layout_width="match_parent"
@@ -30,6 +38,12 @@
         android:id="@+id/addFriendbutton"
         android:text="Add Friend"
         android:layout_below="@+id/search"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeFriendbutton"
+        android:text="Remove Friend"
+        android:layout_below="@+id/addFriendbutton"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
