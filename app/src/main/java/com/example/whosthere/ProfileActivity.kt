@@ -56,6 +56,10 @@ class ProfileActivity : AppCompatActivity(){
             Toast.makeText(applicationContext, "must enter a username...", Toast.LENGTH_LONG).show()
             return
         }
+        if (name==current_username){
+            Toast.makeText(applicationContext,"cannot remove yourself",Toast.LENGTH_LONG).show()
+            return
+        }
         userDBReference!!.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val item = dataSnapshot.getValue(User::class.java)
@@ -108,43 +112,78 @@ class ProfileActivity : AppCompatActivity(){
         mDialogView.confirm_update.setOnClickListener{
             mAlertDialog.dismiss()
             val name=mDialogView.name_update.text.toString()
-            //// change the db
-            Log.i("UPDATE_PROFIEL",name)
-            database!!.reference!!.child("Users").addListenerForSingleValueEvent(object:ValueEventListener{
-                override fun onDataChange(dataSnapshot:DataSnapshot){
-                    for (postSnapshot in dataSnapshot.children){
-                        val item = postSnapshot.getValue(User::class.java)
-                        Log.i("UPDATE PROFILE FRIEND",item!!.friends.contains(current_username).toString())
-                        Log.i("UPDATE PROFILE FRIEND",item!!.friends.toString())
-                        if(item!!.friends.contains(current_username)){
-                            var friends_list= arrayListOf<String>()
-                            for (i in item!!.friends){
-                                if (i!=current_username){
-                                    friends_list.add(i)
+            if (TextUtils.isEmpty(name) ) {
+                Toast.makeText(applicationContext, "must enter a username...", Toast.LENGTH_LONG).show()
+            }
+            else {
+                //// change the db
+                Log.i("UPDATE_PROFIEL", name)
+                database!!.reference!!.child("Users")
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            var hasthisname = false
+                            for (p in dataSnapshot.children) {
+                                val i = p.getValue(User::class.java)
+                                if (name == i!!.username) {
+                                    hasthisname = true
                                 }
                             }
-                            friends_list.add(name)
-                            val new_update=User(item!!.uid,item!!.email,friends_list,item!!.lat,item!!.long,item!!.username)
-                            database!!.reference!!.child("Users").child(item!!.uid).setValue(new_update)
+                            if (hasthisname) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "alread has this username",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                //change the name for friends list
+                                for (postSnapshot in dataSnapshot.children) {
+                                    val item = postSnapshot.getValue(User::class.java)
+                                    if (item!!.friends.contains(current_username)) {
+                                        var friends_list = arrayListOf<String>()
+                                        for (i in item!!.friends) {
+                                            if (i != current_username) {
+                                                friends_list.add(i)
+                                            }
+                                        }
+                                        friends_list.add(name)
+                                        val new_update = User(
+                                            item!!.uid,
+                                            item!!.email,
+                                            friends_list,
+                                            item!!.lat,
+                                            item!!.long,
+                                            item!!.username
+                                        )
+                                        database!!.reference!!.child("Users").child(item!!.uid)
+                                            .setValue(new_update)
+                                    }
+
+                                }
+                                //change username's name
+                                userDBReference!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        val item = dataSnapshot.getValue(User::class.java)
+                                        val update = User(
+                                            item!!.uid,
+                                            item!!.email,
+                                            item!!.friends,
+                                            item!!.lat,
+                                            item!!.long,
+                                            name
+                                        )
+                                        userDBReference!!.setValue(update)
+                                        Toast.makeText(applicationContext, "Update user name succeed", Toast.LENGTH_LONG).show()
+                                    }
+
+                                    override fun onCancelled(p0: DatabaseError) {
+                                    }
+                                })
+                            }
                         }
-
-                    }
-                }
-                override fun onCancelled(p0:DatabaseError){}
-            })
-            userDBReference!!.addListenerForSingleValueEvent(object:ValueEventListener{
-                override fun onDataChange(dataSnapshot:DataSnapshot){
-                    val item = dataSnapshot.getValue(User::class.java)
-                    val update=User(item!!.uid,item!!.email,item!!.friends,item!!.lat,item!!.long,name)
-                    userDBReference!!.setValue(update)
-                }
-
-                override fun onCancelled(p0: DatabaseError) {
-                }
-            })
-
+                        override fun onCancelled(p0: DatabaseError) {}
+                    })
+            }
         }
-        Toast.makeText(applicationContext, "Update user name succeed", Toast.LENGTH_LONG).show()
         mDialogView.cancel_update.setOnClickListener{
             mAlertDialog.dismiss()
         }
