@@ -19,7 +19,7 @@ import android.location.Location
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 class BackgroundLocationService : Service() {
 
@@ -27,6 +27,8 @@ class BackgroundLocationService : Service() {
     private val fastestInterval = 1000 * 15
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var uid: String? = null
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+    private lateinit var userReference: DatabaseReference
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -36,8 +38,8 @@ class BackgroundLocationService : Service() {
         Log.i(TAG, "Entered onCreate")
         super.onCreate()
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
         uid = currentUser!!.uid
+        userReference = FirebaseDatabase.getInstance().getReference("Users")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Creating notification channel
@@ -86,6 +88,7 @@ class BackgroundLocationService : Service() {
                     val location = locationResult!!.lastLocation
                     if (location != null) {
                         updateLocation(location)
+                        checkNearby()
                     }
                 }
             }, Looper.myLooper() // Loops forever or until service is stopped
@@ -102,7 +105,51 @@ class BackgroundLocationService : Service() {
         Log.i(TAG, "Location updated to: ${location.latitude}, ${location.longitude}")
     }
 
+    private fun checkNearby() {
+        Log.i(TAG, "in checkNearby()")
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // getting friends only for the Current User
+                val currFriends = dataSnapshot.child("$uid/friends").children
+
+                val friendsList= arrayListOf<String>()
+
+                //iterating through all the friends
+                for (postSnapshot in currFriends) {
+                    //getting friend
+                    //val friend = postSnapshot.getValue<String>(User::class.java)!!.username
+                    val friend = postSnapshot.value.toString()
+                    //adding friend to the list
+                    friendsList.add(friend)
+                }
+
+                Log.i(TAG, "Added friends complete")
+                for (friend in friendsList) {
+                    val allUsers = dataSnapshot.children
+                    for (user in allUsers) {
+                        Log.i(TAG, "Friend: $friend, User: ${user.child("username")}")
+                        if (friend == user.child("username").value.toString()) {
+                            Log.i(TAG, "Found friend with name: $friend")
+                            val currentLoc = Location("")
+                            currentLoc.latitude = dataSnapshot.child("$uid/lat").value.toString().toDouble()
+                            currentLoc.longitude = dataSnapshot.child("$uid/long").value.toString().toDouble()
+                            val friendLoc = Location("")
+                            friendLoc.latitude = user.child("lat").value.toString().toDouble()
+                            friendLoc.longitude = user.child("long").value.toString().toDouble()
+                            val distanceInMeters = currentLoc.distanceTo(friendLoc)
+                            Log.i(TAG, "Distance in meters to friend: $distanceInMeters")
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        })
+    }
+
     companion object {
-        val TAG = "BackgroundLocationService"
+        const val TAG = "BackgroundLocationService"
     }
 }
