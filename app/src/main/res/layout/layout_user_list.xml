@@ -5,9 +5,15 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Friend"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content"
+        android:text="Name: "
         android:id="@+id/textViewName"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email: "
+        android:layout_below="@+id/textViewName"
+        android:id="@+id/textViewEmail"/>
+
 
 </LinearLayout>
