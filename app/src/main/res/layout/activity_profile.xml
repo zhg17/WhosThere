@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/profileTitle"
+        android:textStyle="bold"
+        android:textSize="50dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="PROFILE"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/usernameView"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimaryDark"
         android:text="Username: "/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/emailView"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
         android:text="Email: "/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/LocationView"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"
         android:text="Location: "/>
-
-    <Button
-        android:id="@+id/update"
-        android:layout_width="143dp"
-        android:layout_height="wrap_content"
-        android:text="Update UserName" />
 
     <EditText
         android:id="@+id/search"
@@ -32,28 +47,35 @@
         android:layout_height="wrap_content"
         android:hint="Enter friend"
         />
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_style"
+        android:text="Update UserName"
+        android:layout_below="@+id/update"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/addFriendbutton"
+        android:background="@drawable/button_style"
         android:text="Add Friend"
         android:layout_below="@+id/search"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/removeFriendbutton"
+        android:background="@drawable/button_style"
         android:text="Remove Friend"
         android:layout_below="@+id/addFriendbutton"/>
+
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/listViewFriends"
-        android:layout_below="@+id/addFriendbutton"/>
-    <Button
+        android:layout_below="@+id/addFriendbutton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notification"
-        android:layout_alignParentBottom="true"
-        android:text="Notification receive"/>
+        android:layout_height="match_parent"
+        android:background="#ffffff" />
 
 </LinearLayout>
