@@ -1,12 +1,21 @@
 package com.example.whosthere
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.text.util.Linkify
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.profile_dialog.view.*
@@ -23,6 +32,8 @@ class ProfileActivity : AppCompatActivity(){
     private var userDBReference:DatabaseReference?=null
     private var database:FirebaseDatabase?=null
     private var removeFriendBtn:Button?=null
+    private var noti:Button?=null
+    private var mID:String="MY_CHANNEL"
 
     private lateinit var friend: MutableList<String>
     internal lateinit var listViewFriends: ListView
@@ -39,6 +50,7 @@ class ProfileActivity : AppCompatActivity(){
         addFriendbutton=findViewById(R.id.addFriendbutton)
         updateprofile=findViewById(R.id.update)
         removeFriendBtn=findViewById(R.id.removeFriendbutton)
+        noti=findViewById(R.id.noti)
 
         friend=ArrayList()
 
@@ -51,6 +63,37 @@ class ProfileActivity : AppCompatActivity(){
         Log.i("profile","profile page IN")
         var lastlogin = FirebaseAuth.getInstance().currentUser!!.metadata!!.lastSignInTimestamp
         Log.i("LAST SEEN",lastlogin.toString())
+
+       // Linkify.addLinks(usernameView,Linkify.ALL)
+        noti!!.setOnClickListener{
+            val mnotimanager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            var mchannel=NotificationChannel(mID,"noti",NotificationManager.IMPORTANCE_DEFAULT)
+            mchannel.setDescription("STH NOTI")
+            mchannel.enableLights(true)
+            mchannel.setLightColor(Color.RED)
+            mnotimanager.createNotificationChannel(mchannel)
+            val intent=Intent(applicationContext,ProfileActivity::class.java)
+            val notificationBuilder = NotificationCompat.Builder(applicationContext)
+                .setContentText("got sth")
+                .setContentTitle("WHOS THERE")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_ONE_SHOT))
+                .setChannelId(mID)
+                .build()
+            mnotimanager.notify(0,notificationBuilder)
+            /*val intent=Intent(applicationContext,ProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val pendingIntent = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_ONE_SHOT)
+            val uri=RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val notificationBuilder = NotificationCompat.Builder(applicationContext)
+                .setContentText("got sth")
+                .setAutoCancel(true)
+                .setSound(uri)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+            val notificationManager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(mID,notificationBuilder.build())*/
+        }
 
     }
     private fun removeFriend(){

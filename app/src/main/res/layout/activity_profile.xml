@@ -49,5 +49,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/listViewFriends"
         android:layout_below="@+id/addFriendbutton"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification"
+        android:layout_alignParentBottom="true"
+        android:text="Notification receive"/>
 
 </LinearLayout>
