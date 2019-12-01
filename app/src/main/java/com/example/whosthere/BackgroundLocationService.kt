@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationCallback
 import android.content.pm.PackageManager
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.location.Location
+import android.os.Handler
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,7 @@ class BackgroundLocationService : Service() {
     private var uid: String? = null
     private val currentUser = FirebaseAuth.getInstance().currentUser
     private lateinit var userReference: DatabaseReference
+    private var friendsList = mutableMapOf<String, Boolean>()
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -57,6 +59,27 @@ class BackgroundLocationService : Service() {
             .setContentText("").build()
 
         startForeground(1, notification)
+
+        userReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // getting friends only for the Current User
+                val currFriends = dataSnapshot.child("$uid/friends").children
+
+                //iterating through all the friends
+                for (postSnapshot in currFriends) {
+                    //getting friend
+                    //val friend = postSnapshot.getValue<String>(User::class.java)!!.username
+                    val friend = postSnapshot.value.toString()
+                    //adding friend to the list
+                    friendsList[friend] = false
+                }
+                Log.i(TAG, "Added friends complete")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        })
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -96,8 +119,6 @@ class BackgroundLocationService : Service() {
     }
 
     private fun updateLocation(location: Location) {
-        //val ref = FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/location")
-        //ref.setValue(location)
         val lat=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/lat")
         lat.setValue(location.latitude)
         val long=FirebaseDatabase.getInstance().getReference("Users/" + uid!! + "/long")
@@ -106,29 +127,12 @@ class BackgroundLocationService : Service() {
     }
 
     private fun checkNearby() {
-        Log.i(TAG, "in checkNearby()")
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // getting friends only for the Current User
-                val currFriends = dataSnapshot.child("$uid/friends").children
-
-                val friendsList= arrayListOf<String>()
-
-                //iterating through all the friends
-                for (postSnapshot in currFriends) {
-                    //getting friend
-                    //val friend = postSnapshot.getValue<String>(User::class.java)!!.username
-                    val friend = postSnapshot.value.toString()
-                    //adding friend to the list
-                    friendsList.add(friend)
-                }
-
-                Log.i(TAG, "Added friends complete")
                 for (friend in friendsList) {
                     val allUsers = dataSnapshot.children
                     for (user in allUsers) {
-                        Log.i(TAG, "Friend: $friend, User: ${user.child("username")}")
-                        if (friend == user.child("username").value.toString()) {
+                        if (friend.key == user.child("username").value.toString()) {
                             Log.i(TAG, "Found friend with name: $friend")
                             val currentLoc = Location("")
                             currentLoc.latitude = dataSnapshot.child("$uid/lat").value.toString().toDouble()
@@ -137,10 +141,18 @@ class BackgroundLocationService : Service() {
                             friendLoc.latitude = user.child("lat").value.toString().toDouble()
                             friendLoc.longitude = user.child("long").value.toString().toDouble()
                             val distanceInMeters = currentLoc.distanceTo(friendLoc)
-                            Log.i(TAG, "Distance in meters to friend: $distanceInMeters")
-                            if (distanceInMeters <= 1609.34) {
-                                Log.i(TAG, "starting notification service")
-                                startService(Intent(this@BackgroundLocationService, NotificationService::class.java))
+                            //Log.i(TAG, "Distance in meters to friend: $distanceInMeters")
+                            Log.i(TAG, "sent notification to ${friend.key}: ${friend.value}")
+                            if (distanceInMeters <= 1609.34 && !friend.value) {
+                                friendsList[friend.key] = true
+                                Log.i(TAG, "sending notification for ${friend.key}")
+                                val notificationIntent = Intent(this@BackgroundLocationService, NotificationService::class.java)
+                                notificationIntent.putExtra("friendName", friend.key)
+                                startService(notificationIntent)
+                                Handler().postDelayed({
+                                    Log.i(TAG, "1 hour passed, resetting notification sent boolean for ${friend.key}")
+                                    friendsList[friend.key] = false
+                                }, 3600000)
                             }
                         }
                     }
