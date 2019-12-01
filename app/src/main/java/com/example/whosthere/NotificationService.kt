@@ -36,9 +36,9 @@ class NotificationService : Service() {
         private lateinit var mNotificationManager: NotificationManager
         private lateinit var mChannelID: String
         // Notification Text Elements
-        private const val tickerText = "This is a Really, Really, Super Long Notification Message!"
+        private const val tickerText = "This is a notification"
         private const val contentTitle = "Notification"
-        private const val contentText = "You've Been Notified!"
+        private const val contentText = "You have a friend nearby!"
         private val mVibratePattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         private val TAG = "NotificationService"
     }
