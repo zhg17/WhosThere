@@ -37,8 +37,8 @@ class NotificationService : Service() {
         private lateinit var mChannelID: String
         // Notification Text Elements
         private const val tickerText = "This is a Really, Really, Super Long Notification Message!"
-        private const val contentTitle = "Notification"
-        private const val contentText = "You've Been Notified!"
+        private const val contentTitle = "Who's There?"
+        private const val contentText = "A friend is nearby!"
         private val mVibratePattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         private val TAG = "NotificationService"
     }
@@ -99,7 +99,7 @@ class NotificationService : Service() {
             MY_NOTIFICATION_ID,
             notificationBuilder.build()
         )
-
+        stopSelf()
     }
 
 }
