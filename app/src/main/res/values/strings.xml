@@ -6,4 +6,5 @@
     <string name="main_logo_desc">Main logo for the application</string>
     <string name="channel_name">Friend Notification</string>
     <string name="channel_description">Your friend is nearby</string>
+    <string name="Profile">Profile</string>
 </resources>
