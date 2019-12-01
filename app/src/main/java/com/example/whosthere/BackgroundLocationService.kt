@@ -138,6 +138,9 @@ class BackgroundLocationService : Service() {
                             friendLoc.longitude = user.child("long").value.toString().toDouble()
                             val distanceInMeters = currentLoc.distanceTo(friendLoc)
                             Log.i(TAG, "Distance in meters to friend: $distanceInMeters")
+                            if (distanceInMeters <= 1609.34) {
+                                startService(Intent(this@BackgroundLocationService, NotificationService::class.java))
+                            }
                         }
                     }
                 }

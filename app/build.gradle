@@ -41,6 +41,11 @@ dependencies {
     implementation 'com.android.support:support-annotations:26.0.0'
     implementation 'com.android.support:support-v4:26.0.0'
     implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation ("com.google.firebase:firebase-messaging:17.3.4"){
+        exclude group: 'com.google.firebase', module: 'firebase-iid'
+    }
+
+    implementation 'com.google.firebase:firebase-iid:17.0.3'
 }
 
 
