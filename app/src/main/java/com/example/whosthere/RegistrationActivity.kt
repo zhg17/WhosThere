@@ -26,6 +26,7 @@ class RegistrationActivity : AppCompatActivity() {
     private var usernameTV:EditText?=null
     private var regBtn: Button? = null
     private var mAuth: FirebaseAuth? = null
+    private var distanceTV: EditText? = null
 
     private var mDatabase:DatabaseReference?=null
 
@@ -43,6 +44,7 @@ class RegistrationActivity : AppCompatActivity() {
         passwordTV = findViewById(R.id.register_pass)
         usernameTV=findViewById(R.id.username)
         regBtn = findViewById(R.id.register_button)
+        distanceTV = findViewById(R.id.register_distance)
 
         passwordTV?.setTransformationMethod(PasswordTransformationMethod.getInstance())
         regBtn!!.setOnClickListener { registerNewUser() }
@@ -54,8 +56,10 @@ class RegistrationActivity : AppCompatActivity() {
 
         val email: String
         val password: String
+        val distance: String
         email = emailTV!!.text.toString()
         password = passwordTV!!.text.toString()
+        distance = distanceTV!!.text.toString()
         val username=usernameTV!!.text.toString()
 
         if (TextUtils.isEmpty(email)) {
@@ -68,6 +72,10 @@ class RegistrationActivity : AppCompatActivity() {
         }
         if (TextUtils.isEmpty(username)){
             Toast.makeText(applicationContext,"Please enter a user name!",Toast.LENGTH_LONG).show()
+            return
+        }
+        if (TextUtils.isEmpty(distance)){
+            Toast.makeText(applicationContext,"Please enter a distance!",Toast.LENGTH_LONG).show()
             return
         }
         var hasusername=false
@@ -88,7 +96,7 @@ class RegistrationActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             Toast.makeText(applicationContext, "Registration successful!", Toast.LENGTH_LONG).show()
 
-                            saveUser(email,username)
+                            saveUser(email,username,distance)
 
                             val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
                             intent.putExtra("uid", uid)
@@ -105,10 +113,10 @@ class RegistrationActivity : AppCompatActivity() {
 
     }
 
-    private fun saveUser(email: String,username:String) {
+    private fun saveUser(email: String,username:String, distance:String) {
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val user = User(uid!!, email, arrayListOf(), 0.0,0.0,username)
+        val user = User(uid!!, email, arrayListOf(), 0.0,0.0,username, distance)
         ref.child(uid!!).setValue(user).addOnCompleteListener{
             Toast.makeText(applicationContext, "User saved", Toast.LENGTH_LONG)
             Log.i("USER saved",uid)

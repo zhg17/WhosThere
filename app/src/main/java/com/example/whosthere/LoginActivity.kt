@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = intent
         uid = intent.getStringExtra("uid")
 
+
         //Initializing views
         userEmail = findViewById(R.id.login_email)
         userPassword = findViewById(R.id.login_pass)

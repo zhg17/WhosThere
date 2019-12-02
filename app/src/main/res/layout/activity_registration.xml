@@ -17,9 +17,8 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/register_pass"
+        app:layout_constraintBottom_toTopOf="@id/register_pass"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,18 +31,18 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/register_email"
-        app:layout_constraintVertical_bias="0.211" />
+        app:layout_constraintTop_toTopOf="@id/register_email"
+        app:layout_constraintVertical_bias="0.197" />
 
     <EditText
         android:id="@+id/register_pass"
-        android:layout_width="207dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="105dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="105dp"
         android:layout_marginBottom="200dp"
         android:ems="10"
@@ -51,24 +50,22 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_email" />
 
     <Button
         android:id="@+id/register_button"
-        android:layout_width="99dp"
+        android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="71dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="76dp"
         android:background="@drawable/button_style"
         android:text="@string/register_btn_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_pass" />
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -83,4 +80,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/mainlogo" />
+
+    <EditText
+        android:id="@+id/register_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="99dp"
+        android:ems="10"
+        android:hint="Distance (Miles)"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_pass" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
