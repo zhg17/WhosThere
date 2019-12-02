@@ -345,7 +345,38 @@ class ProfileActivity : AppCompatActivity(){
         mDialogView.cancel_update.setOnClickListener{
             mAlertDialog.dismiss()
         }
+        mDialogView.confirm_update_distance.setOnClickListener {
+            mAlertDialog.dismiss()
+            val distance=mDialogView.distance_update.text.toString()
+            //check if the input is blank
+            if (TextUtils.isEmpty(distance) ) {
+                Toast.makeText(applicationContext, "Must enter a number of miles...", Toast.LENGTH_LONG).show()
+            }else{
+                //change the distance setting in the database
+                userDBReference!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val item = dataSnapshot.getValue(User::class.java)
+                        val update = User(
+                            item!!.uid,
+                            item!!.email,
+                            item!!.friends,
+                            item!!.lat,
+                            item!!.long,
+                            item!!.username,
+                            distance
+                        )
+                        userDBReference!!.setValue(update)
+                        Toast.makeText(applicationContext, "Updated user distance setting", Toast.LENGTH_LONG).show()
+                    }
 
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+                })
+            }
+        }
+        mDialogView.cancel_update_distance.setOnClickListener{
+            mAlertDialog.dismiss()
+        }
     }
     override fun onStart(){
         super.onStart()

@@ -45,17 +45,17 @@
         android:id="@+id/update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/LocationView"
         android:background="@drawable/button_style"
-        android:text="Update UserName"
-        android:layout_below="@+id/LocationView"/>
+        android:text="Update User Profile" />
 
     <Button
+        android:id="@+id/editFriendbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editFriendbutton"
+        android:layout_below="@+id/update"
         android:background="@drawable/button_style"
-        android:text="Edit Friend FList"
-        android:layout_below="@+id/update"/>
+        android:text="Update Friend List" />
 
 
     <ListView

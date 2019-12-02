@@ -145,7 +145,7 @@ class BackgroundLocationService : Service() {
                             val distanceInMeters = currentLoc.distanceTo(friendLoc)
                             //Log.i(TAG, "Distance in meters to friend: $distanceInMeters")
                             Log.i(TAG, "sent notification to ${friend.key}: ${friend.value}")
-                            if (distanceInMeters <= distanceSetting && !friend.value) {
+                            if ((distanceInMeters <= (distanceSetting*1609.34)) && !friend.value) {
                                 friendsList[friend.key] = true
                                 Log.i(TAG, "sending notification for ${friend.key}")
                                 val notificationIntent = Intent(this@BackgroundLocationService, NotificationService::class.java)

@@ -40,7 +40,6 @@ class NotificationService : Service() {
 
         private const val tickerText = "This is a notification"
         private const val contentTitle = "Notification"
-        private const val contentText = "You have a friend nearby!"
         private val mVibratePattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         private val TAG = "NotificationService"
         private var friendName: String? = null
@@ -97,6 +96,7 @@ class NotificationService : Service() {
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setAutoCancel(true)
             .setContentTitle(contentTitle)
+            .setColor(R.color.colorPrimary)
             .setContentText("Your friend $friendName is nearby!")
             .setContentIntent(mContentIntent)
 
