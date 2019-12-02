@@ -126,7 +126,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.i(TAG,mLastLocation.toString())
                 val currentLocation = LatLng(currLatitude, currLongitude)
                 mMap.addMarker(MarkerOptions().position(currentLocation).title("Current Device Location"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))
                 displayFriends()
             }
         }
@@ -155,6 +155,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             Log.i(TAG, "permission already granted")
             getLastLocation()
         }
+       // val latLng = LatLng(currLatitude, currLongitude)
+       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
     }
 
     private fun reset () {

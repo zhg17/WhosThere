@@ -60,7 +60,7 @@ class ProfileActivity : AppCompatActivity(){
         val mDialogView=LayoutInflater.from(this).inflate(R.layout.profile_dialog_addfd,null)
         val mBuilder=AlertDialog.Builder(this)
             .setView(mDialogView)
-            .setTitle("Update Friend List")
+            .setTitle("UPDATE FRIEND LIST")
         val mAlertDialog=mBuilder.show()
         // dialog for update friends name
 
@@ -204,7 +204,8 @@ class ProfileActivity : AppCompatActivity(){
                                 list,
                                 item!!.lat,
                                 item!!.long,
-                                item!!.username
+                                item!!.username,
+                                item!!.distance
                             )
                             userDBReference!!.setValue(update)
                             // remove the current user for the targeted user's friend list
@@ -229,7 +230,8 @@ class ProfileActivity : AppCompatActivity(){
                                                     list2,
                                                     item2!!.lat,
                                                     item2!!.long,
-                                                    item2!!.username
+                                                    item2!!.username,
+                                                    item2!!.distance
                                                 )
                                                 database!!.reference!!.child("Users")
                                                     .child(item2!!.uid).setValue(new_update)
@@ -258,7 +260,7 @@ class ProfileActivity : AppCompatActivity(){
         val mDialogView=LayoutInflater.from(this).inflate(R.layout.profile_dialog,null)
         val mBuilder=AlertDialog.Builder(this)
             .setView(mDialogView)
-            .setTitle("Update Username")
+            .setTitle("UPDATE PROFILE")
         val mAlertDialog=mBuilder.show()
         // dialog for input new user name
         mDialogView.confirm_update.setOnClickListener{
@@ -270,7 +272,7 @@ class ProfileActivity : AppCompatActivity(){
             }
             else {
                 //// change the db
-                Log.i("UPDATE_PROFIEL", name)
+                Log.i("UPDATE_PROFILE", name)
                 database!!.reference!!.child("Users")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -308,7 +310,8 @@ class ProfileActivity : AppCompatActivity(){
                                             friends_list,
                                             item!!.lat,
                                             item!!.long,
-                                            item!!.username
+                                            item!!.username,
+                                            item!!.distance
                                         )
                                         //update the value of the user
                                         database!!.reference!!.child("Users").child(item!!.uid)
@@ -326,7 +329,8 @@ class ProfileActivity : AppCompatActivity(){
                                             item!!.friends,
                                             item!!.lat,
                                             item!!.long,
-                                            name
+                                            name,
+                                            item!!.distance
                                         )
                                         userDBReference!!.setValue(update)
                                         Toast.makeText(applicationContext, "Update user name succeed", Toast.LENGTH_LONG).show()

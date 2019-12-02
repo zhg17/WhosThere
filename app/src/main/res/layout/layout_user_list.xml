@@ -4,16 +4,22 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textViewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Name: "
-        android:id="@+id/textViewName"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <TextView
+        android:id="@+id/textViewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email: "
         android:layout_below="@+id/textViewName"
-        android:id="@+id/textViewEmail"/>
+        android:gravity="center"
+        android:text="Email: "
+        android:textSize="15sp" />
 
 
 </LinearLayout>
