@@ -35,11 +35,8 @@ class NotificationService : Service() {
         private const val KEY_COUNT = "key_count"
         private lateinit var mNotificationManager: NotificationManager
         private lateinit var mChannelID: String
-<<<<<<< HEAD
 
-=======
         // Notification Text Elements
->>>>>>> 99a042b08f2a33603f5114f34ca3574b911a636b
         private const val tickerText = "This is a notification"
         private const val contentTitle = "Notification"
         private const val contentText = "You have a friend nearby!"
