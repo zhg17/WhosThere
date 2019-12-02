@@ -37,15 +37,20 @@ class NotificationService : Service() {
         private lateinit var mChannelID: String
         // Notification Text Elements
 
-        private const val tickerText = "This is a Really, Really, Super Long Notification Message!"
-        private const val contentTitle = "Who's There?"
-        private const val contentText = "A friend is nearby!"
+        private const val tickerText = "This is a notification"
+        private const val contentTitle = "Notification"
+        private const val contentText = "You have a friend nearby!"
         private val mVibratePattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         private val TAG = "NotificationService"
+        private var friendName: String? = null
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.i(TAG, "entered onStartCommand")
+        friendName = intent.getStringExtra("friendName") as String
+        Log.i(TAG, "Friend name is: $friendName")
+        createNotificationChannel()
+
         if (intent.action == "com.example.whosthere.NotificationService") {
         } else {
             Log.d(TAG, "Received intent with action=" + intent.action + "; now what?")
@@ -62,7 +67,6 @@ class NotificationService : Service() {
         super.onCreate()
 
         mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        createNotificationChannel()
     }
 
     private var mNotificationCount: Int = 0
@@ -92,7 +96,7 @@ class NotificationService : Service() {
             .setSmallIcon(android.R.drawable.stat_sys_warning)
             .setAutoCancel(true)
             .setContentTitle(contentTitle)
-            .setContentText("$contentText ( ${++mNotificationCount} )")
+            .setContentText("Your friend $friendName is nearby!")
             .setContentIntent(mContentIntent)
 
         // Pass the Notification to the NotificationManager:
