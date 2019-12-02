@@ -3,31 +3,41 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <EditText
+        android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/name_update"
-        android:inputType="text"
-        android:hint="Enter User name"/>
+        android:hint="Enter friend"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
+
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:id="@+id/confirm_update"
+            android:id="@+id/confirm_button"
             android:background="@drawable/button_style"
-            android:text="Confirm"/>
+            android:text="Add friend"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:id="@+id/cancel_update"
+            android:id="@+id/remove_button"
             android:background="@drawable/button_style"
-            android:text="Cancel"/>
+            android:text="Delete Friend"/>
+
 
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_button"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_style"
+        android:text="Cancel"/>
 
 </LinearLayout>

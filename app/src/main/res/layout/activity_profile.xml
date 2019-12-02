@@ -41,41 +41,28 @@
         android:gravity="center_horizontal"
         android:text="Location: "/>
 
-    <EditText
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter friend"
-        />
-
     <Button
         android:id="@+id/update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_style"
         android:text="Update UserName"
-        android:layout_below="@+id/update"/>
+        android:layout_below="@+id/LocationView"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addFriendbutton"
+        android:id="@+id/editFriendbutton"
         android:background="@drawable/button_style"
-        android:text="Add Friend"
-        android:layout_below="@+id/search"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/removeFriendbutton"
-        android:background="@drawable/button_style"
-        android:text="Remove Friend"
-        android:layout_below="@+id/addFriendbutton"/>
+        android:text="Edit Friend FList"
+        android:layout_below="@+id/update"/>
+
 
     <ListView
         android:id="@+id/listViewFriends"
+        android:layout_below="@+id/editFriendbutton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/addFriendbutton"
         android:background="#ffffff" />
 
 </LinearLayout>

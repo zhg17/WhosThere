@@ -37,6 +37,7 @@ class NotificationService : Service() {
         private lateinit var mChannelID: String
 
         // Notification Text Elements
+
         private const val tickerText = "This is a notification"
         private const val contentTitle = "Notification"
         private const val contentText = "You have a friend nearby!"
