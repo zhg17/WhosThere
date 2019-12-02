@@ -19,11 +19,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/confirm_update"
+            android:background="@drawable/button_style"
             android:text="Confirm"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cancel_update"
+            android:background="@drawable/button_style"
             android:text="Cancel"/>
 
     </LinearLayout>
