@@ -134,6 +134,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
       //  currLongitude = 10.0
     }
 
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -210,6 +211,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 2) {
+            Log.i(TAG, "onActivityResult is about to clear the map and add markers again")
+            mMap.clear()
+            getLastLocation()
+        }
     }
 
     companion object {

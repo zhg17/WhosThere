@@ -240,6 +240,8 @@ class ProfileActivity : AppCompatActivity(){
                                                     "Friend remove succeed",
                                                     Toast.LENGTH_LONG
                                                 ).show()
+                                                var intent = Intent(this@ProfileActivity, MapActivity::class.java)
+                                                startActivityForResult(intent, 2)
                                             }
                                         }
                                     }
@@ -395,20 +397,7 @@ class ProfileActivity : AppCompatActivity(){
                 val currentuser_friendlist=item!!.friends
 
                 if (!currentuser_friendlist.isEmpty()){
-                    var friendlist= arrayListOf<User>()
-                    database!!.reference!!.child("Users")
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(p0: DataSnapshot) {
-                                for (p00 in p0.children){
-                                    val u = p00.getValue<User>(User::class.java)
-                                    if (currentuser_friendlist.contains(u!!.username)){
-                                        friendlist.add(u)
-                                    }
-                                }
-                            }
-                            override fun onCancelled(p0:DatabaseError){}
-                        })
-                    val friendlistAdapter=UserList(this@ProfileActivity,friendlist)
+                    val friendlistAdapter=UserList(this@ProfileActivity,currentuser_friendlist)
                     listViewFriends.adapter=friendlistAdapter
                 }
             }
